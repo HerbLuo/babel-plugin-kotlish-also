@@ -1,0 +1,5 @@
+"use strict";
+
+(function (_o) {
+  return print(_o);
+})(obj);
