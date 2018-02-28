@@ -40,6 +40,10 @@ obj
   .takeUnless(o => o.p !== null)
   .also(print)
 
+obj
+  .alsoPrint()
+  .also(print)
+
 function foo(o) {
   return o.also(console.log(it))
     .a().also(console.log(it))

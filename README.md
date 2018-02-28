@@ -15,15 +15,13 @@ npm install --save-dev babel-plugin-kotlish-also
 ### 使用场景
 来看下面这段代码
 ```javascript
-function foo(o) {
-  return o.a().b.c
-}
+const foo = (o) => o.a().b.c
 ```
 如果我们调试时想要输出 `o` 或 `o.a()` 等，
 通常情况下，我们不得不做出如下改变
 ```javascript
 // if we want to print o or o.a etc
-function foo(o) {
+const foo = (o) => {
   console.log(o)
   const t = o.a()
   console.log(t)
@@ -34,23 +32,21 @@ function foo(o) {
 也算是相当麻烦，
 当使用了 `kotlish-also` 后，可以写成这样
 ```javascript
-function fooFull(o) {
-  return o.also(i => console.log(i))
+const foo = (o) => 
+  o.also(i => console.log(i))
     .a().also(i => console.log(i))
     .b.c
-}
 ```
 或者使用'it'省略匿名函数也可以
 ```javascript
-function foo(o) {
-  return o.also(console.log(it))
+const foo = (o) =>
+  o.also(console.log(it))
     .a().also(console.log(it))
     .b.c
-}
 ```
 插件最终会将代码转换成如下形式
 ```javascript
-function foo(o) {
+const foo = (o) => {
   return function (_o) {
     (function (it) {
       return console.log(it);
@@ -65,6 +61,16 @@ function foo(o) {
     return _o;
   }(o).a()).b.c;
 }
+```
+甚至，插件为了方便输出，增加了alsoPrint方法
+```javascript
+const a = obj.alsoPrint().a
+```
+等价于
+```javascript
+const a = obj.also(function (_o) {
+  console.log(_o)
+}).a
 ```
 
 除了also，
