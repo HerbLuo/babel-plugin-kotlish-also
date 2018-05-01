@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-kotlish-also",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "kotlin-like extension function (also, let and etc) support for javascript.",
   "main": "lib/index.js",
   "files": [

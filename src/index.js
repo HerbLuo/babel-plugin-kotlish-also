@@ -74,8 +74,7 @@ module.exports = function ({types}) {
             const arg0 = path.node.arguments[0]
 
             // function (_i) { console.log(_i) }
-            const printFunctionExpression = types.FunctionExpression(
-              null,
+            const printFunctionExpression = types.ArrowFunctionExpression(
               [types.Identifier('_i')],
               types.BlockStatement([
                 types.ExpressionStatement(
@@ -91,8 +90,7 @@ module.exports = function ({types}) {
             )
 
             // function (it) { return !arg0! }
-            const withItFunctionExpression = types.FunctionExpression(
-              null,
+            const withItFunctionExpression = types.ArrowFunctionExpression(
               [types.Identifier(IT)],
               types.BlockStatement([
                 types.ReturnStatement(arg0)
@@ -116,8 +114,7 @@ module.exports = function ({types}) {
             const argT = types.Identifier('_o')
 
             // new function replace to
-            const newFunc = types.FunctionExpression(
-              null, // no name
+            const newFunc = types.ArrowFunctionExpression(
               [argT], // arguments (o)
               types.BlockStatement(getFunctionBody(methodName, block, argT))
             )
