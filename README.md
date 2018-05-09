@@ -64,13 +64,15 @@ const foo = (o) => {
 ```
 甚至，插件为了方便输出，增加了alsoPrint方法
 ```javascript
-const a = obj.alsoPrint().a
+const a = obj.alsoPrint().a.alsoPrint('变量a的值为%o')
 ```
 等价于
 ```javascript
 const a = obj.also(function (_o) {
   console.log(_o)
-}).a
+}).a.also(function (_o) {
+  console.log('变量a的值为%o', _o)
+})
 ```
 
 除了also，
