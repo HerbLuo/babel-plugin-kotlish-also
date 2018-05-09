@@ -83,7 +83,9 @@ module.exports = function ({types}) {
                       types.Identifier('console'),
                       types.Identifier('log')
                     ),
-                    [types.Identifier('_i')]
+                    arg0
+                      ? [arg0, types.Identifier('_i')]
+                      : [types.Identifier('_i')]
                   )
                 )
               ])

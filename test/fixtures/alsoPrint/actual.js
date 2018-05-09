@@ -1,5 +1,5 @@
 (() => {
-  const result = {}
+  const result = []
 
   const obj = {
     p: 'property',
@@ -8,13 +8,15 @@
     }
   }
 
-  global.console.log = function (data) {
-    result[0] = data
+  global.console.log = function (data, args) {
+    data && result.push(data)
+    args && result.push(args)
   }
 
   obj
     .p
     .alsoPrint()
+    .alsoPrint('测试')
 
   return result
 })()

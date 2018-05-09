@@ -42,6 +42,7 @@ obj
 
 obj
   .alsoPrint()
+  .alsoPrint('obj为')
   .also(print)
 
 function foo(o) {
