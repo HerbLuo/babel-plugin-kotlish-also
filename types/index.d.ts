@@ -26,3 +26,7 @@ interface Object<T> {
 interface global {
   it: any
 }
+
+interface Window {
+  it: any
+}
