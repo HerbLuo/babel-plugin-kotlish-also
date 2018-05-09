@@ -1,7 +1,11 @@
 {
   "name": "babel-plugin-kotlish-also",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "kotlin-like extension function (also, let and etc) support for javascript.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HerbLuo/babel-plugin-kotlish-also.git"
+  },
   "main": "lib/index.js",
   "files": [
     "lib",
