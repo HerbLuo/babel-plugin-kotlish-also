@@ -50,3 +50,7 @@ function foo(o) {
     .a().also(console.log(it))
     .b.c
 }
+
+Promise.resolve(1)
+  .alsoThen(m => console.log(m))
+  .then(console.log)

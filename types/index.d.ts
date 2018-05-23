@@ -19,7 +19,8 @@ interface Object<T> {
   takeIf(itFunc: T): T | null;
   takeUnless(itFunc: T): T | null;
 
-  alsoPrint(tip?: string): null;
+  alsoPrint(tip?: string): T;
+  alsoThen(onResolve: Function): T;
   to(left: any): T
 }
 

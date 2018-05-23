@@ -1,6 +1,40 @@
 const IT = 'it'
 
+/**
+ * 是否存在it （Identifier）
+ */
+const hasIt = (path) => {
+  let areITFound = false
+  if (path.node.name === IT) {
+    return true
+  }
+  path.traverse({
+    Identifier (path) {
+      if (path.node.name === IT) {
+        areITFound = true
+      }
+    }
+  })
+  return areITFound
+}
+
 module.exports = function ({types}) {
+  const consoleLog = (args) => types.CallExpression(
+    types.MemberExpression( // console.log
+      types.Identifier('console'),
+      types.Identifier('log')
+    ),
+    args
+  )
+
+  const promiseThen = (promise, thenFunc) => types.CallExpression(
+    types.MemberExpression(
+      promise,
+      types.Identifier('then')
+    ),
+    [thenFunc]
+  )
+
   return {
     visitor: {
       CallExpression (path) {
@@ -39,24 +73,6 @@ module.exports = function ({types}) {
             ]
           }
 
-          /**
-           * 是否存在it （Identifier）
-           */
-          const hasIt = (path) => {
-            let areITFound = false
-            if (path.node.name === IT) {
-              return true
-            }
-            path.traverse({
-              Identifier (path) {
-                if (path.node.name === IT) {
-                  areITFound = true
-                }
-              }
-            })
-            return areITFound
-          }
-
           /*
            * 针对 let, also, 等方法 进行改写
            * 1 T.[methodName](block: (T) => any): T
@@ -68,7 +84,8 @@ module.exports = function ({types}) {
               'also', // ok
               'takeIf', // ok
               'takeUnless', // ok
-              'alsoPrint'
+              'alsoPrint', // ok
+              'alsoThen'
             ].includes(methodName)) {
             // 参数 （用户传入的）
             const arg0 = path.node.arguments[0]
@@ -78,15 +95,8 @@ module.exports = function ({types}) {
               [types.Identifier('_i')],
               types.BlockStatement([
                 types.ExpressionStatement(
-                  types.CallExpression(
-                    types.MemberExpression( // console.log
-                      types.Identifier('console'),
-                      types.Identifier('log')
-                    ),
-                    arg0
-                      ? [arg0, types.Identifier('_i')]
-                      : [types.Identifier('_i')]
-                  )
+                  consoleLog(arg0 ? [arg0, types.Identifier('_i')]
+                    : [types.Identifier('_i')])
                 )
               ])
             )
@@ -106,6 +116,15 @@ module.exports = function ({types}) {
             let block
             if (methodName === 'alsoPrint') {
               block = printFunctionExpression
+            } else if (methodName === 'alsoThen') {
+              block = types.ArrowFunctionExpression(
+                [types.Identifier('_p')],
+                types.BlockStatement([
+                  types.ExpressionStatement(
+                    promiseThen(types.Identifier('_p'), arg0)
+                  )
+                ])
+              )
             } else if (hasIt(path.get('arguments.0'))) {
               block = withItFunctionExpression
             } else {
